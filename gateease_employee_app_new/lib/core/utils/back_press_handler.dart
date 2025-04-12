@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class BackPressHandler {
   DateTime? _lastBackPressTime;
   
-  /// Handles back button press with double-tap to exit functionality
-  /// Returns true if the app should exit, false otherwise
-  bool handleBackPress() {
+  Future<bool> handleBackPress() async {
     final now = DateTime.now();
     if (_lastBackPressTime == null || 
         now.difference(_lastBackPressTime!) > const Duration(seconds: 2)) {
@@ -23,6 +22,8 @@ class BackPressHandler {
     }
     
     // Second press within 2 seconds, exit the app
-    return true;
+    // This is a more gentle way to exit the app compared to exit(0)
+    SystemNavigator.pop();
+    return false; // Return false to prevent default back navigation
   }
 }

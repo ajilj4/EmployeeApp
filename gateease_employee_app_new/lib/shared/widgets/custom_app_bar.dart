@@ -10,51 +10,57 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      elevation: 0,
-      automaticallyImplyLeading: false,
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          // Left: Hamburger menu
-          IconButton(
-            icon: const Icon(Icons.menu, size: 28),
-            color: Colors.black,
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
-          ).animate().fade(duration: 500.ms).scale(),
-          
-          // Center: Logo
-          SvgPicture.asset(
-           AppIcons.bluelogo
-          ).animate().fade(duration: 600.ms).scale(),
-          
-          // Right: Notification bell with indicator
-          Stack(
-            children: [
-              IconButton(
-                icon: const Icon(Icons.notifications_outlined, size: 28),
-                color: Colors.black,
-                onPressed: () {
-                  context.go(AppRoutes.notifications);
-                },
-              ),
-              Positioned(
-                right: 8,
-                top: 8,
-                child: Container(
-                  width: 10,
-                  height: 10,
-                  decoration: BoxDecoration(
-                    color: Colors.orange,
-                    borderRadius: BorderRadius.circular(10),
+    // Determine icon color based on current theme.
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final iconColor = isDark ? Colors.white : Colors.black;
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 15), // 3px gap above the header.
+      child: AppBar(
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // Left: Hamburger menu.
+            IconButton(
+              icon: Icon(Icons.menu, size: 28, color: iconColor),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            ).animate().fade(duration: 500.ms).scale(),
+            
+            // Center: Logo.
+            SvgPicture.asset(
+              AppIcons.bluelogo,
+            ).animate().fade(duration: 600.ms).scale(),
+            
+            // Right: Notification bell with indicator.
+            Stack(
+              children: [
+                IconButton(
+                  icon: Icon(Icons.notifications_outlined, size: 28, color: iconColor),
+                  onPressed: () {
+                    context.go(AppRoutes.notifications);
+                  },
+                ),
+                Positioned(
+                  right: 8,
+                  top: 8,
+                  child: Container(
+                    width: 10,
+                    height: 10,
+                    decoration: BoxDecoration(
+                      color: Colors.orange,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ).animate().fade(duration: 700.ms).scale(),
-        ],
+              ],
+            ).animate().fade(duration: 700.ms).scale(),
+          ],
+        ),
       ),
     );
   }

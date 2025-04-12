@@ -7,21 +7,23 @@ import 'package:path_provider/path_provider.dart';
 import 'package:gateease_employee_app_new/router.dart';
 import 'package:gateease_employee_app_new/injection_container.dart' as di;
 
+// A provider to hold the current theme mode, defaulting to light.
+final themeModeProvider = StateProvider<ThemeMode>((_) => ThemeMode.light);
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-    await dotenv.load(fileName: ".env");
+  await dotenv.load(fileName: ".env");
 
   /// Initialize Hive for local storage
-  if (!kIsWeb) { // ✅ Avoids error on Chrome
+  if (!kIsWeb) {
     final appDocumentDir = await getApplicationDocumentsDirectory();
     await Hive.initFlutter(appDocumentDir.path);
   } else {
-    await Hive.initFlutter(); // ✅ Works for Web
+    await Hive.initFlutter();
   }
 
   /// Dependency Injection Setup
-  di.init(); // Calls the function in `injection_container.dart`
+  di.init();
 
   runApp(const ProviderScope(child: MyApp()));
 }
@@ -31,11 +33,14 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final themeMode = ref.watch(themeModeProvider);
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: "GateEase Employee App",
       theme: ThemeData.light(),
-      routerConfig: ref.watch(routerProvider), // `go_router` navigation
+      darkTheme: ThemeData.dark(),
+      themeMode: themeMode,
+      routerConfig: ref.watch(routerProvider), // go_router navigation
     );
   }
 }

@@ -12,4 +12,8 @@ class AppIcons {
   static const String backArrow = 'assets/icons/backArrow.svg';
   static const String lock = 'assets/icons/lock.svg';
   static const String otpImage = 'assets/icons/otpImage.svg';
+
+  // dashboard
+  static const String search = 'assets/icons/search.svg';
+  static const String clockbg = 'assets/icons/clockbg.svg';
 }
