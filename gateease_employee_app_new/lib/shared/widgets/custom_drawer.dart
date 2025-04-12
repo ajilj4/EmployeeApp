@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gateease_employee_app_new/core/app_images.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gateease_employee_app_new/core/app_routes.dart';
+import 'package:gateease_employee_app_new/features/authentication/presentation/providers/auth_provider.dart';
 
-class CustomDrawer extends StatelessWidget {
+class CustomDrawer extends ConsumerWidget {
   const CustomDrawer({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Drawer(
       backgroundColor: Colors.white,
       child: SafeArea(
@@ -131,7 +133,13 @@ class CustomDrawer extends StatelessWidget {
               "Logout", 
               icon: Icons.logout,
               textColor: Colors.red,
-              onTap: () => context.go(AppRoutes.login),
+              onTap: () {
+                // Call the logout function from the AuthNotifier
+                ref.read(authProvider.notifier).logout().then((_) {
+                  // After logout completes, navigate to login page
+                  context.go(AppRoutes.login);
+                });
+              },
             ),
             const SizedBox(height: 16),
           ],

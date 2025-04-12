@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
 import 'features/authentication/domain/usecases/login_usecase.dart';
+import 'features/authentication/domain/usecases/logout_usecase.dart';
 import 'features/authentication/data/repositories/auth_repository_impl.dart';
 import 'features/authentication/domain/repositories/auth_repository.dart';
 import 'features/authentication/data/datasources/auth_remote_data_source.dart';
@@ -24,5 +25,9 @@ void init() {
   // Register Use Case with the required repository
   sl.registerLazySingleton<LoginUseCase>(
     () => LoginUseCase(sl<AuthRepository>()),
+  );
+
+  sl.registerLazySingleton<LogoutUseCase>(
+    () => LogoutUseCase(sl<AuthRepository>()),
   );
 }
